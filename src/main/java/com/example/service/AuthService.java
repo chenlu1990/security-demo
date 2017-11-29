@@ -17,4 +17,3 @@ public interface AuthService {
     User getUserByName(String name);
     List<User> findAll();
 }
-/****test!!!*/
