@@ -18,14 +18,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by chenlu on 2017/11/23.
  */
 @Service
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private UserRepository userRepository;
@@ -42,7 +41,7 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public User register(User userAdd) {
         final String username = userAdd.getName();
-        if(userRepository.findUserByName(username) != null){
+        if (userRepository.findUserByName(username) != null) {
             return null;
         }
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -55,7 +54,7 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public String login(String username, String password) {
-        UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username,password);
+        UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
         final Authentication authentication = authenticationManager.authenticate(upToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -67,13 +66,14 @@ public class AuthServiceImpl implements AuthService{
     public String refresh(String oldToken) {
         String username = jwtTokenUtil.getUsernameFromToken(oldToken);
         JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
-        if(jwtTokenUtil.canTokenBeRefreshed(oldToken,jwtUser.getLastPasswordResetDate())){
+        if (jwtTokenUtil.canTokenBeRefreshed(oldToken, jwtUser.getLastPasswordResetDate())) {
             return jwtTokenUtil.refreshToken(oldToken);
         }
         return null;
     }
+
     @Override
-    public User getUserByName(String username){
+    public User getUserByName(String username) {
         return userRepository.findUserByName(username);
     }
 

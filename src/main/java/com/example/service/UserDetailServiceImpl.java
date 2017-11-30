@@ -1,6 +1,5 @@
 package com.example.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Entity.Authority;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Service;
  * Created by chenlu on 2017/11/23.
  */
 @Service
-public class UserDetailServiceImpl implements UserDetailsService{
+public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -32,9 +31,9 @@ public class UserDetailServiceImpl implements UserDetailsService{
         User user = userRepository.findUserByName(s);
         List<Authority> authorizations = authorityRepository.findAll();
         user.setAuthorities(authorizations);
-        if(user == null){
-            throw new UsernameNotFoundException(String.format("No user found width name %s",s));
-        }else{
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("No user found width name %s", s));
+        } else {
             return JwtUserFactory.create(user);
         }
     }
